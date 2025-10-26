@@ -1,0 +1,31 @@
+h1, h2, h3, h4, h5, h6, p, a {
+  font-family: "Space Grotesk", sans-serif;
+}
+
+table, th, td {
+  font-family: "Nunito", sans-serif;
+}
+
+tr:nth-child(even) {
+  background-color: lightgray;
+}
+
+td, tr {
+  border: none;
+}
+
+a {
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+ul {
+  list-style: none;
+}
+
+.rounded-img {
+  border-radius: 1rem;
+  border: 5px solid black;
+}
