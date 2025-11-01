@@ -28,3 +28,19 @@ const todoList = [
 ];
 
 // add your code here
+const targetList = document.getElementById('todos');
+
+const createList = (list, targetUl) => {
+  list.forEach((item) => {
+    targetUl.insertAdjacentHTML('beforeend',
+`<li>` +
+        `<input type="checkbox" id="todo-${item.id}" ${item.completed ? "checked" : ""}>` +
+        `<label for="todo-${item.id}">${item.task}</label>` +
+      `</li>`
+    );
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  createList(todoList, targetList);
+});
