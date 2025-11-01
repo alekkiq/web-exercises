@@ -771,3 +771,56 @@ const restaurants = [
 ];
 
 // your code here
+const targetTable = document.getElementById('target');
+
+const sortByDistance = async (locations) => {
+  try {
+    const pos = await getClientPos({timeout: 3000});
+
+    const withDistance = locations.map((l) => {
+      const [long, lat] = l.location.coordinates;
+      const distance = Math.sqrt((pos.coords.latitude - lat)**2 + (pos.coords.longitude - long)**2);
+      return {...l, distance};
+    });
+
+    withDistance.sort((a, b) => a.distance - b.distance);
+
+    return withDistance;
+  } catch (err) {
+    console.error(err);
+    return locations;
+  }
+}
+
+const getClientPos = (options = {}) => {
+  return new Promise((res, rej) => {
+    if (!('geolocation' in navigator)) {
+      rej(new Error('Geolocation is not supported'));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(res, rej, options);
+  });
+}
+
+const createTableRow = (item, table) => {
+  const row = document.createElement('tr');
+
+  row.appendChild(createTableCell(item.name));
+  row.appendChild(createTableCell(item.address));
+
+  table.appendChild(row);
+}
+
+const createTableCell = (content) => {
+  const cell = document.createElement('td');
+  cell.textContent = content;
+  return cell;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  sortByDistance(restaurants).then((sortedRestaurants) => {
+    for (const restaurant in sortedRestaurants) {
+      createTableRow(sortedRestaurants[restaurant], targetTable);
+    }
+  });
+});
