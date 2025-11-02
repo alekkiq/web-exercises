@@ -20,7 +20,16 @@ th {
   text-align: left;
 }
 
+tr:not(:has(th)) {
+  cursor: pointer;
+}
+
 td {
   border-bottom: 1px solid #ccc;
   padding: 0.5em 1em;
+}
+
+.highlight {
+  font-weight: 700;
+  background-color: lightgray;
 }

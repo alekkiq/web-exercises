@@ -771,3 +771,68 @@ const restaurants = [
 ];
 
 // your code here
+const table = document.getElementById('restaurants');
+const modal = document.getElementById('modal');
+const restaurantInfo = document.getElementById('restaurant-info');
+
+const initTable = (items, target) => {
+  items.forEach((item) => {
+    target.appendChild(createRestaurantRow(item));
+  });
+}
+
+const createRestaurantRow = (restaurant) => {
+  const el = document.createElement('tr');
+
+  const nameEl = document.createElement('td');
+  nameEl.textContent = restaurant.name;
+
+  const addressEl = document.createElement('td');
+  addressEl.textContent = restaurant.address;
+
+  el.appendChild(nameEl);
+  el.appendChild(addressEl);
+
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    el.classList.add('highlight');
+    createRestaurantInfo(restaurant, restaurantInfo);
+    modal.showModal();
+  });
+
+  return el;
+}
+
+const createRestaurantInfo = (restaurant, target) => {
+  target.innerHTML = '';
+
+  const name = document.createElement('h3');
+  name.textContent = restaurant.name;
+
+  const address = document.createElement('p');
+  address.textContent = restaurant.address;
+
+  const postalCode = document.createElement('p');
+  postalCode.textContent = restaurant.postalCode;
+
+  const city = document.createElement('p');
+  city.textContent = restaurant.city;
+
+  const phone = document.createElement('p');
+  phone.textContent = restaurant.phone;
+
+  const company = document.createElement('p');
+  company.textContent = restaurant.company;
+
+  target.append(name, address, postalCode, city, phone, company);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initTable(restaurants.sort((a, b) => a.name.localeCompare(b.name)), table);
+
+  document.getElementById('close-modal').addEventListener('click', (e) => {
+    e.preventDefault();
+    document.querySelector('.highlight').classList.remove('highlight');
+    modal.close();
+  });
+});
