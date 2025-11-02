@@ -28,7 +28,7 @@ const todoList = [
 ];
 
 // add your code here
-const targetList = document.getElementById('todos');
+const targetList = document.querySelector('ul');
 
 const createList = (list, targetUl) => {
   list.forEach((item) => {

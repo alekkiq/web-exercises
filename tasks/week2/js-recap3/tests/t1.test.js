@@ -17,13 +17,16 @@ describe('Todo List HTML Generation', () => {
   });
 
   test('Generated HTML matches expected structure', async () => {
-    // Include the initial HTML content from the separate file
-    const initialHtml = await fs.readFile('./t1/t1.html', 'utf-8');
-    await page.setContent(initialHtml);
+    const initialHtml = await fs.readFile('tasks/week2/js-recap3/t1/t1.html', 'utf-8');
+    const studentCode = await fs.readFile('tasks/week2/js-recap3/t1/t1.js', 'utf-8');
 
-    // Include the student's JavaScript code from the separate file
-    const studentCode = await fs.readFile('./t1/t1.js', 'utf-8');
-    await page.evaluate(studentCode);
+    // inject student script into the HTML so it runs during page load (so DOMContentLoaded listener fires)
+    const htmlWithScript = initialHtml.replace(
+      /<\/body>/i,
+      `<script>${studentCode}</script></body>`
+    );
+
+    await page.setContent(htmlWithScript, { waitUntil: 'domcontentloaded' });
 
     // Get the generated HTML content
     const generatedHtml = await page.evaluate(
@@ -32,7 +35,7 @@ describe('Todo List HTML Generation', () => {
 
     // Include the expected HTML content from the separate file
     const expectedHtml = await fs.readFile(
-      './tests/expectedHTML/t1.html',
+      'tasks/week2/js-recap3/tests/expectedHTML/t1.html',
       'utf-8'
     );
 

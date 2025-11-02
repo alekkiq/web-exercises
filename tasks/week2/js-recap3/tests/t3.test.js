@@ -17,10 +17,10 @@ describe('BOM Information Display', () => {
   });
 
   test('Displays required BOM information', async () => {
-    const htmlContent = await fs.readFile('./t3/t3.html', 'utf-8');
+    const htmlContent = await fs.readFile('tasks/week2/js-recap3/t3/t3.html', 'utf-8');
     await page.setContent(htmlContent);
 
-    const studentCode = await fs.readFile('./t3/t3.js', 'utf-8');
+    const studentCode = await fs.readFile('tasks/week2/js-recap3/t3/t3.js', 'utf-8');
     await page.evaluate(studentCode);
 
     const options = {
