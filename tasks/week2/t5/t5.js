@@ -771,3 +771,39 @@ const restaurants = [
 ];
 
 // your code here
+const initMap = (startCoords = {lat: 0, long: 0}) => {
+  const map = L.map('map').setView([startCoords.lat, startCoords.long], 11);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+
+  return map;
+}
+
+const drawMarker = (restaurant, map) => {
+  const [long, lat] = restaurant.location.coordinates;
+  const marker = L.marker([lat, long]).addTo(map);
+  marker.bindPopup(`<h3>${restaurant.name}</h3><p>${restaurant.address}</p>`)
+}
+
+const getClientPos = async (options = {}) => {
+  return new Promise((res, rej) => {
+    if (!('geolocation' in navigator)) {
+      rej(new Error('Geolocation is not supported'));
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(res, rej, options);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  getClientPos({timeout: 3000, enableHighAccuracy: true}).then((cPos) => {
+    const map = initMap({lat: cPos.coords.latitude, long: cPos.coords.longitude});
+
+    for (const r in restaurants) {
+      console.log(restaurants[r])
+      drawMarker(restaurants[r], map);
+    }
+  });
+});
